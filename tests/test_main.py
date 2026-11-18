@@ -92,6 +92,31 @@ class TestMainMenu(unittest.TestCase):
         )
         self.assertIn("Goodbye!", output.getvalue())
 
+    @patch("main.main", side_effect=KeyboardInterrupt)
+    def test_keyboard_interrupt_displays_message(self, mock_main):
+        output = io.StringIO()
+
+        with redirect_stdout(output):
+            main.run_application()
+
+        self.assertIn(
+            "Application interrupted. Goodbye!",
+            output.getvalue()
+        )
+        mock_main.assert_called_once()
+
+    @patch("main.main", side_effect=EOFError)
+    def test_eof_error_displays_message(self, mock_main):
+        output = io.StringIO()
+
+        with redirect_stdout(output):
+            main.run_application()
+
+        self.assertIn(
+            "Input stream closed. Goodbye!",
+            output.getvalue()
+        )
+        mock_main.assert_called_once()
 
 if __name__ == "__main__":
     unittest.main()

@@ -74,10 +74,15 @@ def main() -> None:
             )
 
 
-if __name__ == "__main__":
+def run_application() -> None:
+    """Run the application and handle unexpected interruptions."""
     try:
         main()
     except KeyboardInterrupt:
         print("\n\nApplication interrupted. Goodbye!")
     except EOFError:
         print("\n\nInput stream closed. Goodbye!")
+
+
+if __name__ == "__main__":
+    run_application()
